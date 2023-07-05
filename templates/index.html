@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLASK</title>
+</head>
+<body>
+    <h1>This is the basic flask app.</h1>
+    <form  method="post" action="/submit">
+       <textarea name="text"></textarea>
+
+        <select name="voice" id="voice">
+            {% for voice in voice_names %}
+            <option value="{{voice}}"><h3>{{voice}}</h3></option>
+            {% endfor %}
+            
+          </select>
+        <button type="submit">submit</button>
+
+        <audio controls>
+           
+            <source src="{{audio}}" type="audio/mpeg">
+           
+          </audio>
+       
+            
+        
+
+    </form>
+</body>
+</html>
