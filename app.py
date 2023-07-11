@@ -5,7 +5,9 @@ from text2speech import fetchVoiceName, generate_audio
 import asyncio
 import json
 
-
+def get_audio_files():
+    audio_files = os.listdir("./static")
+    return audio_files
 
 
 app = Flask(__name__)
@@ -18,7 +20,7 @@ def entry_point():
     for voice in voices:
         voice_names.append(voice["Name"])
    
-    return render_template("index.html", voice_names=voice_names)
+    return render_template("index.html", voice_names=voice_names,text="",audios=get_audio_files())
 
 #this is for handling the post request 
 @app.route("/submit", methods=["POST"])
@@ -28,8 +30,16 @@ def form_submit():
         text = request.form["text"]
         voice = request.form["voice"]
         audio = asyncio.run(generate_audio(text,voice))
-        return render_template("index.html", audio=audio)
+        
+        voices = asyncio.run(fetchVoiceName())
+        voice_names = []
+        for voice in voices:
+            voice_names.append(voice["Name"])
+        return render_template("index.html", audio=audio,voice_names=voice_names,text=text,audios=get_audio_files())
 
 
+#make sure to comment the below code during  production release
 # if __name__ == '__main__':
 #     app.run(debug=True, port=8000)
+
+# get_audio_files()
