@@ -42,6 +42,18 @@
       background-color: lightblue;
       box-shadow: 2px 2px 17px rgb(161, 8, 8);
     }
+
+    .audio-form{
+      display: flex;
+      flex-direction: row;
+
+    }
+
+    @media only screen and (max-width:512px) {
+      .container{
+        width: 90%;
+      }
+    }
   </style>
 </head>
 
@@ -50,7 +62,7 @@
     <h1>Convert text into speech</h1>
     <br />
     <form method="post" action="/submit">
-      <textarea name="text" rows="16">{{text}}</textarea>
+      <textarea name="text" rows="16" id="maintext">{{text}}</textarea>
       <br />
       <select name="voice" id="voice">
         {% for voice in voice_names %}
@@ -61,7 +73,19 @@
 
       </select>
       <br />
-      <button type="submit">Convert</button>
+      <div>
+        <button type="submit">Convert</button>
+        <div class="slidecontainer">
+          <label>Rate</label>
+          <input type="range" min="-100" max="100" value="0" class="slider" id="rate" name="rate">
+        </div>
+        <div class="slidecontainer">
+          <label>Pitch</label>
+          <input type="range" min="-100" max="100" value="0" class="slider" id="pitch" name="pitch">
+        </div>
+        
+      </div>
+      
       <br />
 
 
@@ -74,11 +98,19 @@
     <div>
       {% for audio in audios %}
       <div>
-        <audio controls>
+        <form method="post" action="/delete-audio">
+          <input name="audio" type="hidden" value="./static/{{audio}}">
+          <input name="text" value="{{text}}" type="hidden" class="da-text"/>
+          <div class="audio-form">
+            <audio controls>
 
-          <source src="/static/{{audio}}" type="audio/mpeg">
-
-        </audio>
+              <source src="/static/{{audio}}" type="audio/mpeg">
+  
+            </audio>
+            <button type="submit">Remove</button>
+          </div>
+          
+        </form>
       </div>
       {% endfor %}
     </div>
@@ -98,6 +130,12 @@
       console.log(voices.value);
       localStorage.setItem("sjCurrentTTSVoice", voices.value);
     })
+
+
+    document.querySelector("#maintext").addEventListener("input",function(){
+      document.querySelectorAll(".da-text").forEach((node)=>{node.value=document.querySelector("#maintext").value});
+    })
+    
   </script>
 </body>
 

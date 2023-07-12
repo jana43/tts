@@ -14,15 +14,17 @@ async def fetchVoiceName():
 
 
     
-async def generate_audio(txt,voice):
+async def generate_audio(txt,voice,rate,pitch):
    
      content = txt
      mss = MSSpeech()
      
      await mss.set_voice(voice)
+     
+     print(rate)
            
-     await mss.set_rate(0.4)
-     await mss.set_pitch(0)
+     await mss.set_rate(rate)
+     await mss.set_pitch(pitch)
      await mss.set_volume(1)
      
      now = datetime.now()
