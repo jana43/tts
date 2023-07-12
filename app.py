@@ -6,8 +6,16 @@ import asyncio
 import json
 
 def get_audio_files():
-    audio_files = os.listdir("./static")
-    return audio_files
+    try:
+        audio_files = os.listdir("./static")
+        return audio_files
+    except FileNotFoundError:
+        return []
+    except Exception as e:
+        print(f"An error occurred while deleting the file: {e}")
+        return []
+    
+    
 
 
 app = Flask(__name__)
